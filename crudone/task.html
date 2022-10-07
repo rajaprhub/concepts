@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+
+      #navbar{
+        display: flex;
+        grid-gap: 10px;
+        justify-content: space-evenly;
+        margin: 10px auto;
+        width: 90%;
+    }
+      body{
+            text-align:center ;
+        }
+    #container{
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: repeat(4,1fr);
+        margin: 10px auto;
+        width: 90%;
+    }
+      .cards{
+          display: grid;
+          gap: 5px;
+         padding: 3px;
+         border: 1px solid gray;
+         border-radius: 3px;
+    }
+
+    </style>
+</head>
+<body>
+ 
+     <div id="navbar"> 
+        <a href="index.html"> <h2>Home Page</h2> </a> 
+        <a href="index.html"> <h2>Todlist Page</h2> </a>
+   
+     </div>
+  
+
+
+     <div id="container">
+        <!-- append all task here -->
+      </div>
+</body>
+</html>
+
+<script>
+
+    console.log("jdsjdsj")
+     let prelist = JSON.parse(localStorage.getItem("localTask")) || [];
+
+ console.log(prelist) ;
+
+       let renderDom = (data,index) =>{
+           let container = document.getElementById('container')  ;
+           container.innerHTML = null ;
+           data.forEach(({id, todo, status}) => {
+              let div = document.createElement('div');
+              div.setAttribute ("class","cards")
+
+              let h3 = document.createElement('h2');
+              h3.innerText = todo;
+              let p = document.createElement('p');
+              p.innerText = status;
+             // Delete
+              let delete_btn = document.createElement('button');
+              delete_btn.innerText = "Delete Button"
+              delete_btn.onclick=() =>{
+                removeme(index);
+             }
+             //Toggle
+             let markComplete = document.createElement("button");
+                  markComplete.innerText = " Mark as complete";
+                   markComplete.onclick = () =>{
+                    markCompleteFun(div)
+          }
+           
+             div.append(h3,delete_btn,markComplete )
+             container.append(div)
+
+           }) ;
+        
+    }
+
+    renderDom(prelist);
+
+    function removeme(index){
+          prelist.splice(index,1);
+          localStorage.setItem("localTask",JSON.stringify(prelist))
+          window.location.reload();
+      }
+
+      let markCompleteFun = (div) =>{
+        alert("Mark as complete")
+        div.style.border = "2px solid green";
+    
+   }
+
+</script>

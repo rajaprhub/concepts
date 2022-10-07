@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+
+
+    </style>
+</head>
+<body>
+       <h2> login</h2>
+    <div id="login"> 
+        <input type ="text"  id="loginusername" placeholder="username">
+       <input type ="password" id="loginpassword" placeholder="password">
+       <button id="submit"> Login Now</button> 
+    </div>
+</body>
+</html>
+
+<script> 
+     
+  let submit_btn = document.getElementById("submit");
+  submit_btn.onclick = () =>{
+   Login()
+  }
+   async function Login(){
+        let login_data = {
+                  username : document.getElementById('loginusername').value,
+                  password : document.getElementById('loginpassword').value,
+         };
+          let username = login_data.username //normal way
+          login_data = JSON.stringify(login_data);
+
+        let res = await fetch (`https://masai-api-mocker.herokuapp.com/auth/login`,{
+             method :'POST',
+             body : login_data,
+             headers : {
+                'Content-Type':'application/json',
+             },
+        });
+           console.log('Res first',res) ;
+           let data = await res.json();
+           getProfile(username,data.token); // get profile
+           console.log('data obtained',data);
+          //  let {username } = login_data 
+         //  let {token } =  data ;
+    } ;
+   
+        let getProfile = async (username,token)=> {
+        let res = await fetch (`https://masai-api-mocker.herokuapp.com/user/${username}`,{
+              headers : {
+                  'Content-Type':'application/json',
+                  Authorization : `Bearer ${token}`,
+               },
+        })
+          // console.log(" username,token is",username,token)
+          res = await res.json();
+          console.log("res Final",res);
+         //  window.location.href="admin.html"
+     }
+
+
+</script>
